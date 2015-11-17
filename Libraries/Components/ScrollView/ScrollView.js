@@ -343,10 +343,6 @@ var ScrollView = React.createClass({
     this.scrollResponderHandleScroll(e);
   },
 
-  handleRefresh: function (event) {
-    this.props.onRefresh && this.props.onRefresh(event.nativeEvent);
-  },
-
   render: function() {
     var contentContainerStyle = [
       this.props.horizontal && styles.contentContainerHorizontal,
@@ -403,8 +399,13 @@ var ScrollView = React.createClass({
       onResponderTerminate: this.scrollResponderHandleTerminate,
       onResponderRelease: this.scrollResponderHandleResponderRelease,
       onResponderReject: this.scrollResponderHandleResponderReject,
-      onRefresh: this.handleRefresh
     };
+
+    // this is necessary because if we set it on props, even when empty,
+    // it'll trigger the default pull-to-refresh behaviour on native.
+    if (this.props.onRefresh) {
+      props.onRefresh = (event) => this.props.onRefresh(event.nativeEvent);
+    }
 
     var ScrollViewClass;
     if (Platform.OS === 'ios') {
