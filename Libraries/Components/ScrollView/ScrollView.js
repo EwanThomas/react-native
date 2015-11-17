@@ -279,6 +279,11 @@ var ScrollView = React.createClass({
      * @platform ios
      */
     zoomScale: PropTypes.number,
+
+    refreshing: PropTypes.bool,
+
+    onRefresh: PropTypes.func,
+
   },
 
   mixins: [ScrollResponder.Mixin],
@@ -338,6 +343,10 @@ var ScrollView = React.createClass({
     this.scrollResponderHandleScroll(e);
   },
 
+  handleRefresh: function (event) {
+    this.props.onRefresh && this.props.onRefresh(event.nativeEvent);
+  },
+
   render: function() {
     var contentContainerStyle = [
       this.props.horizontal && styles.contentContainerHorizontal,
@@ -394,6 +403,7 @@ var ScrollView = React.createClass({
       onResponderTerminate: this.scrollResponderHandleTerminate,
       onResponderRelease: this.scrollResponderHandleResponderRelease,
       onResponderReject: this.scrollResponderHandleResponderReject,
+      onRefresh: this.handleRefresh
     };
 
     var ScrollViewClass;

@@ -65,6 +65,8 @@ RCT_EXPORT_VIEW_PROPERTY(scrollIndicatorInsets, UIEdgeInsets)
 RCT_EXPORT_VIEW_PROPERTY(snapToInterval, int)
 RCT_EXPORT_VIEW_PROPERTY(snapToAlignment, NSString)
 RCT_REMAP_VIEW_PROPERTY(contentOffset, scrollView.contentOffset, CGPoint)
+RCT_EXPORT_VIEW_PROPERTY(refreshing, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(onRefresh, RCTDirectEventBlock)
 
 - (NSDictionary<NSString *, id> *)constantsToExport
 {

@@ -144,6 +144,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)init)
 
 @property (nonatomic, copy) NSIndexSet *stickyHeaderIndices;
 @property (nonatomic, assign) BOOL centerContent;
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
 
 @end
 
@@ -350,6 +351,13 @@ RCT_NOT_IMPLEMENTED(- (instancetype)init)
   }];
 
   return hitView ?: [super hitTest:point withEvent:event];
+}
+
+- (void)setRefreshControl:(UIRefreshControl *)refreshControl
+{
+  [_refreshControl removeFromSuperview];
+  _refreshControl = refreshControl;
+  [self addSubview:_refreshControl];
 }
 
 @end
@@ -843,6 +851,29 @@ RCT_SET_AND_PRESERVE_OFFSET(setScrollIndicatorInsets, UIEdgeInsets);
 {
   return [_scrollView valueForKey:key];
 }
+
+- (void)setOnRefresh:(RCTDirectEventBlock)onRefresh
+{
+  _onRefresh = [onRefresh copy];
+  UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+  [refreshControl addTarget:self action:@selector(refreshControlValueChanged) forControlEvents:UIControlEventValueChanged];
+  _scrollView.refreshControl = refreshControl;
+}
+
+- (void)refreshControlValueChanged
+{
+  if (self.onRefresh) {
+    self.onRefresh(nil);
+  }
+}
+
+- (void)setRefreshing:(BOOL)refreshing
+{
+  _refreshing = refreshing;
+  _refreshing ? [_scrollView.refreshControl beginRefreshing] : [_scrollView.refreshControl endRefreshing];
+}
+
+
 
 @end
 
