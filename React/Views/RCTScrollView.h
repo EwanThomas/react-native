@@ -47,7 +47,6 @@
 @property (nonatomic, assign) int snapToInterval;
 @property (nonatomic, copy) NSString *snapToAlignment;
 @property (nonatomic, copy) NSIndexSet *stickyHeaderIndices;
-@property (nonatomic, assign) BOOL refreshing;
 @property (nonatomic, copy) RCTDirectEventBlock onRefresh;
 
 @end
